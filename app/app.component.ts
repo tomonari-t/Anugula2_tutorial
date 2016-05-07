@@ -1,5 +1,8 @@
 import {Component} from "@angular/core";
 
+import { HeroDetailComponent }  from './hero-detail.comonent';
+import { Hero } from './hero';
+
 var styles = [`
   .selected {
     background-color: #CFD8DC !important;
@@ -50,42 +53,8 @@ var styles = [`
   }
 `];
 
-@Component({
-    selector: "my-app",
-    template:`
-      <ul class="heroes">
-        <li *ngFor="let hero of heroes" (click)="onSelect(hero)"
-            [class.selected]="hero === selectedHero"
-        >
-          <span class="badge">{{hero.id}}</span> {{hero.name}}
-        </li>
-      </ul>
-      <div *ngIf="selectedHero">
-        <h2>{{selectedHero.name}} details!</h2>
-        <div><label>id: </label>{{selectedHero.id}}</div>
-        <div>
-          <label>name: </label>
-          <input [(ngModel)]="selectedHero.name" placeholder="name"/>
-        </div>
-      </div>
-    `,
-    styles: styles
-})
 
-export class AppComponent {
-  public heroes = HEROES;
-  selectedHero: Hero;
-  onSelect(hero: Hero) {
-    this.selectedHero = hero;
-  }
-}
-
-export class Hero {
-  id: number;
-  name: string;
-}
-
-var HEROES: Hero[] = [
+const HEROES: Hero[] = [
   { "id": 11, "name": "Mr. Nice" },
   { "id": 12, "name": "Narco" },
   { "id": 13, "name": "Bombasto" },
@@ -97,3 +66,27 @@ var HEROES: Hero[] = [
   { "id": 19, "name": "Magma" },
   { "id": 20, "name": "Tornado" }
 ];
+
+@Component({
+    selector: "my-app",
+    template:`
+      <ul class="heroes">
+        <li *ngFor="let hero of heroes" (click)="onSelect(hero)"
+            [class.selected]="hero === selectedHero"
+        >
+          <span class="badge">{{hero.id}}</span> {{hero.name}}
+        </li>
+      </ul>
+      <my-hero-detail [hero]="selectedHero"></my-hero-detail>
+    `,
+    styles: styles,
+    directives: [HeroDetailComponent]
+})
+
+export class AppComponent {
+  public heroes = HEROES;
+  selectedHero: Hero;
+  onSelect(hero: Hero) {
+    this.selectedHero = hero;
+  }
+}
